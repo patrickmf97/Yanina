@@ -16,6 +16,34 @@
   font-size: 1.25rem;
 }
 
+.nav__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.lang-switch {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.lang-switch__btn {
+  border: none;
+  background: transparent;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.lang-switch__btn.is-active {
+  background: var(--primary);
+  color: #fff;
+}
+
 .nav__cta {
   text-decoration: none;
   font-weight: 600;
@@ -72,13 +100,41 @@
   transform: translateY(-1px);
 }
 
-.hero__shape {
+.hero__photo-wrap {
+  position: relative;
   justify-self: center;
+  width: 100%;
+  max-width: 380px;
 }
 
-.hero__shape svg {
+.hero__blob {
+  position: absolute;
+  top: -8%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  z-index: 0;
+}
+
+.hero__photo {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 340px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.cita {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+
+.cita p {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--primary-deep);
+  max-width: 24ch;
 }
 
 .especialidades {
@@ -137,8 +193,9 @@
     padding: var(--space-lg) 0;
   }
 
-  .hero__shape {
+  .hero__photo-wrap {
     order: -1;
+    max-width: 260px;
   }
 
   .especialidades__grid {
