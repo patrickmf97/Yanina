@@ -18,6 +18,29 @@ export const content = {
     agendaTexto: 'Las sesiones son por videollamada, con horarios flexibles. Elegí el mejor día para vos.',
     agendaBtn: 'Ver horarios disponibles',
     ubicacion: 'Paraná, Entre Ríos',
+
+    // Auth
+    loginTitulo: 'Iniciar sesión',
+    loginSubtitulo: 'Accedé para ver tus consultas y pagos.',
+    cadastroTitulo: 'Crear cuenta',
+    cadastroSubtitulo: 'Registrate para poder agendar tu sesión.',
+    campoNombre: 'Nombre completo',
+    campoTelefone: 'Teléfono',
+    campoEmail: 'Correo electrónico',
+    campoSenha: 'Contraseña',
+    botaoEntrar: 'Entrar',
+    botaoCrearCuenta: 'Crear cuenta',
+    linkParaCadastro: '¿No tenés cuenta? Registrate',
+    linkParaLogin: '¿Ya tenés cuenta? Iniciar sesión',
+    erroGenerico: 'Algo salió mal. Intentá de nuevo.',
+
+    // Agendar
+    agendarTitulo: 'Elegí el día y horario',
+    agendarSubtitulo: 'Sesiones online, de 50 minutos.',
+    semHorarios: 'No hay horarios disponibles esta semana.',
+    horarioReservado: 'Horario reservado',
+    confirmarAgendamento: 'Confirmar y pagar',
+    precisaLogin: 'Necesitás iniciar sesión para agendar una consulta.',
   },
   pt: {
     nombre: 'Yanina',
@@ -38,5 +61,28 @@ export const content = {
     agendaTexto: 'As sessões são por videochamada, com horários flexíveis. Escolha o melhor dia para você.',
     agendaBtn: 'Ver horários disponíveis',
     ubicacion: 'Paraná, Entre Ríos',
+
+    // Auth
+    loginTitulo: 'Entrar',
+    loginSubtitulo: 'Acesse para ver suas consultas e pagamentos.',
+    cadastroTitulo: 'Criar conta',
+    cadastroSubtitulo: 'Cadastre-se para poder agendar sua sessão.',
+    campoNombre: 'Nome completo',
+    campoTelefone: 'Telefone',
+    campoEmail: 'E-mail',
+    campoSenha: 'Senha',
+    botaoEntrar: 'Entrar',
+    botaoCrearCuenta: 'Criar conta',
+    linkParaCadastro: 'Não tem conta? Cadastre-se',
+    linkParaLogin: 'Já tem conta? Entrar',
+    erroGenerico: 'Algo deu errado. Tente novamente.',
+
+    // Agendar
+    agendarTitulo: 'Escolha o dia e horário',
+    agendarSubtitulo: 'Sessões online, de 50 minutos.',
+    semHorarios: 'Não há horários disponíveis esta semana.',
+    horarioReservado: 'Horário reservado',
+    confirmarAgendamento: 'Confirmar e pagar',
+    precisaLogin: 'Você precisa entrar para agendar uma consulta.',
   },
 }
