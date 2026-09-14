@@ -1,34 +1,28 @@
-import { useState } from 'react'
-import { content } from '../content.js'
+import { Link } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
+import LangSwitch from '../components/LangSwitch.jsx'
 import foto from '../assets/yanina.png'
 import './Home.css'
 
 export default function Home() {
-  const [lang, setLang] = useState('es')
-  const t = content[lang]
+  const { t } = useLanguage()
+  const { user, signOut } = useAuth()
 
   return (
     <div className="page">
       <header className="nav">
         <span className="nav__brand">{t.nombre}</span>
         <div className="nav__right">
-          <div className="lang-switch" role="group" aria-label="Idioma / Idioma">
-            <button
-              className={lang === 'es' ? 'lang-switch__btn is-active' : 'lang-switch__btn'}
-              onClick={() => setLang('es')}
-              aria-pressed={lang === 'es'}
-            >
-              ES
+          <LangSwitch />
+          {user ? (
+            <button className="nav__cta nav__cta--ghost" onClick={signOut}>
+              {t.botaoEntrar === 'Entrar' ? 'Sair' : 'Salir'}
             </button>
-            <button
-              className={lang === 'pt' ? 'lang-switch__btn is-active' : 'lang-switch__btn'}
-              onClick={() => setLang('pt')}
-              aria-pressed={lang === 'pt'}
-            >
-              PT
-            </button>
-          </div>
-          <a className="nav__cta" href="#agendar">{t.navCta}</a>
+          ) : (
+            <Link className="nav__cta nav__cta--ghost" to="/entrar">{t.loginTitulo}</Link>
+          )}
+          <Link className="nav__cta" to="/agendar">{t.navCta}</Link>
         </div>
       </header>
 
@@ -37,7 +31,7 @@ export default function Home() {
           <p className="hero__eyebrow">{t.titulo}</p>
           <h1 className="hero__headline">{t.frase}</h1>
           <p className="hero__lead">{t.bio}</p>
-          <a className="hero__button" href="#agendar">{t.heroBtn}</a>
+          <Link className="hero__button" to="/agendar">{t.heroBtn}</Link>
         </div>
         <div className="hero__photo-wrap">
           <svg className="hero__blob" viewBox="0 0 400 400" fill="none" aria-hidden="true">
@@ -69,7 +63,7 @@ export default function Home() {
       <section id="agendar" className="agendamento-cta">
         <h2>{t.agendaTitulo}</h2>
         <p>{t.agendaTexto}</p>
-        <a className="hero__button" href="/agendar">{t.agendaBtn}</a>
+        <Link className="hero__button" to="/agendar">{t.agendaBtn}</Link>
       </section>
 
       <footer className="footer">

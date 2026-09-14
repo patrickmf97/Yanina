@@ -1,0 +1,84 @@
+.agendar-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+}
+
+.agendar-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.agendar-page h1 {
+  font-size: 1.8rem;
+}
+
+.agendar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.agendar-dia {
+  border-top: 2px solid var(--primary);
+  padding-top: var(--space-sm);
+}
+
+.agendar-dia h3 {
+  font-size: 1rem;
+  margin-bottom: var(--space-sm);
+  text-transform: capitalize;
+}
+
+.agendar-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.agendar-slot {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.agendar-slot:hover {
+  border-color: var(--primary);
+}
+
+.agendar-slot.is-selected {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.agendar-slot:disabled {
+  opacity: 0.4;
+  cursor: default;
+  text-decoration: line-through;
+}
+
+.agendar-vazio {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.agendar-confirmar {
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+}
+
+.agendar-confirmar__aviso {
+  color: var(--ink-soft);
+  margin-bottom: var(--space-sm);
+}
