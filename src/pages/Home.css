@@ -1,0 +1,147 @@
+.page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) 0;
+}
+
+.nav__brand {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+}
+
+.nav__cta {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav__cta:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-xl) 0;
+}
+
+.hero__eyebrow {
+  color: var(--primary-deep);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+}
+
+.hero__headline {
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  max-width: 14ch;
+  margin-bottom: var(--space-md);
+}
+
+.hero__lead {
+  margin-bottom: var(--space-md);
+  font-size: 1.05rem;
+}
+
+.hero__button {
+  display: inline-block;
+  text-decoration: none;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.9rem 1.6rem;
+  border-radius: var(--radius);
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.hero__button:hover {
+  background: var(--primary-deep);
+  transform: translateY(-1px);
+}
+
+.hero__shape {
+  justify-self: center;
+}
+
+.hero__shape svg {
+  width: 100%;
+  max-width: 340px;
+}
+
+.especialidades {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--line);
+}
+
+.especialidades h2 {
+  font-size: 1.8rem;
+  margin-bottom: var(--space-md);
+}
+
+.especialidades__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.especialidade {
+  padding-top: var(--space-sm);
+  border-top: 2px solid var(--primary);
+}
+
+.especialidade h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.agendamento-cta {
+  background: var(--bg-alt);
+  margin: var(--space-lg) calc(-1 * var(--space-md));
+  padding: var(--space-xl) var(--space-md);
+  text-align: left;
+  border-radius: var(--radius);
+}
+
+.agendamento-cta h2 {
+  font-size: 1.8rem;
+  margin-bottom: var(--space-sm);
+  max-width: 20ch;
+}
+
+.agendamento-cta p {
+  margin-bottom: var(--space-md);
+}
+
+.footer {
+  padding: var(--space-lg) 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 780px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: var(--space-lg) 0;
+  }
+
+  .hero__shape {
+    order: -1;
+  }
+
+  .especialidades__grid {
+    grid-template-columns: 1fr;
+  }
+}
