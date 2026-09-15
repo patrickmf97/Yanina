@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient.js'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
@@ -26,6 +26,8 @@ function proximosDias() {
 export default function Agendar() {
   const { t, lang } = useLanguage()
   const { user } = useAuth()
+  const [searchParams] = useSearchParams()
+  const pago = searchParams.get('pago') // 'ok' | 'erro' | 'pendente' | null
 
   const [disponibilidade, setDisponibilidade] = useState([])
   const [consultasOcupadas, setConsultasOcupadas] = useState([]) // array de timestamps ISO já reservados
@@ -84,22 +86,42 @@ export default function Agendar() {
 
     const iso = slotISO(selecionado.dia, selecionado.hora)
 
-    const { error } = await supabase.from('consultas').insert({
-      cliente_id: user.id,
-      data_hora: iso,
-      status: 'pendente_pago',
-    })
-
-    setConfirmando(false)
+    const { data: novaConsulta, error } = await supabase
+      .from('consultas')
+      .insert({
+        cliente_id: user.id,
+        data_hora: iso,
+        status: 'pendente_pago',
+      })
+      .select()
+      .single()
 
     if (error) {
+      setConfirmando(false)
       setMensagem(t.erroGenerico)
       return
     }
 
-    // A próxima etapa (integração Mercado Pago) vai redirecionar para o checkout
-    // aqui, usando o id da consulta criada. Por enquanto, apenas confirma a reserva.
-    setMensagem('OK')
+    try {
+      const resp = await fetch('/api/criar-pagamento', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ consulta_id: novaConsulta.id }),
+      })
+      const json = await resp.json()
+
+      if (!resp.ok || !json.url) {
+        setConfirmando(false)
+        setMensagem(t.erroGenerico)
+        return
+      }
+
+      // Redireciona pro checkout do Mercado Pago
+      window.location.href = json.url
+    } catch {
+      setConfirmando(false)
+      setMensagem(t.erroGenerico)
+    }
   }
 
   return (
@@ -111,6 +133,14 @@ export default function Agendar() {
 
       <h1>{t.agendarTitulo}</h1>
       <p>{t.agendarSubtitulo}</p>
+
+      {pago && (
+        <p className={pago === 'ok' ? 'admin-msg' : 'auth-form__error'} style={{ marginTop: '1rem' }}>
+          {pago === 'ok' && t.pagoOkMsg}
+          {pago === 'erro' && t.pagoErroMsg}
+          {pago === 'pendente' && t.pagoPendenteMsg}
+        </p>
+      )}
 
       {!user && (
         <p className="agendar-confirmar__aviso" style={{ marginTop: '1rem' }}>
@@ -152,19 +182,13 @@ export default function Agendar() {
 
       {selecionado && user && (
         <div className="agendar-confirmar">
-          {mensagem === 'OK' ? (
-            <p>✅ {selecionado.hora} — {DIAS[lang][selecionado.dia.getDay()]} {selecionado.dia.getDate()}/{selecionado.dia.getMonth() + 1}</p>
-          ) : (
-            <>
-              <p className="agendar-confirmar__aviso">
-                {selecionado.hora} — {DIAS[lang][selecionado.dia.getDay()]} {selecionado.dia.getDate()}/{selecionado.dia.getMonth() + 1}
-              </p>
-              {mensagem && <p className="auth-form__error">{mensagem}</p>}
-              <button className="auth-form__submit" onClick={confirmar} disabled={confirmando}>
-                {t.confirmarAgendamento}
-              </button>
-            </>
-          )}
+          <p className="agendar-confirmar__aviso">
+            {selecionado.hora} — {DIAS[lang][selecionado.dia.getDay()]} {selecionado.dia.getDate()}/{selecionado.dia.getMonth() + 1}
+          </p>
+          {mensagem && <p className="auth-form__error">{mensagem}</p>}
+          <button className="auth-form__submit" onClick={confirmar} disabled={confirmando}>
+            {t.confirmarAgendamento}
+          </button>
         </div>
       )}
     </div>

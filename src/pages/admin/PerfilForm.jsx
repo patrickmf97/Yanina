@@ -14,7 +14,7 @@ export default function PerfilForm() {
       .select('*')
       .limit(1)
       .maybeSingle()
-      .then(({ data }) => setPerfil(data ?? { nombre: '', titulo: '', bio: '', frase: '', cita: '', foto_url: '', email_contato: '', instagram: '', ubicacion: '' }))
+      .then(({ data }) => setPerfil(data ?? { nombre: '', titulo: '', bio: '', frase: '', cita: '', foto_url: '', email_contato: '', instagram: '', ubicacion: '', precio_consulta: '' }))
   }, [])
 
   function campo(nome, valor) {
@@ -64,6 +64,16 @@ export default function PerfilForm() {
       <label>
         {t.campoFotoUrl}
         <input value={perfil.foto_url ?? ''} onChange={(e) => campo('foto_url', e.target.value)} />
+      </label>
+      <label>
+        {t.campoPrecio}
+        <input
+          type="number"
+          min="0"
+          step="0.01"
+          value={perfil.precio_consulta ?? ''}
+          onChange={(e) => campo('precio_consulta', e.target.value)}
+        />
       </label>
       <label>
         {t.campoEmail}

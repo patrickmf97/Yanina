@@ -18,6 +18,18 @@
 3. **Horários disponíveis**
    - Antes só dava pra inserir direto no Supabase — agora a Yani mesma gerencia isso em `/admin`, aba "Horarios"
 
+4. **Mercado Pago**
+   - Rode `supabase/pagamento_schema.sql` no SQL Editor (adiciona o campo de preço)
+   - Crie uma conta em https://www.mercadopago.com.ar (ou use a que a Yani já tem)
+   - Vá em `Seu negocio > Configuración > Credenciales de producción` e copie o **Access Token**
+   - Na Vercel, adicione as variáveis de ambiente (Settings > Environment Variables), como **Config** (não Secret, porque essas não têm o prefixo `VITE_` — não são expostas ao navegador de qualquer forma, já que só rodam no servidor):
+     - `SUPABASE_URL` (mesma URL do projeto, sem o `VITE_`)
+     - `SUPABASE_SERVICE_ROLE_KEY` (em `Project Settings > API > service_role` no Supabase — **NUNCA** compartilhe essa chave, ela ignora todas as regras de segurança)
+     - `MERCADOPAGO_ACCESS_TOKEN`
+     - `SITE_URL` (ex: `https://yaniterapia.vercel.app`)
+   - No painel admin (`/admin` → aba Perfil), defina o **preço da consulta** — sem isso o pagamento não é criado
+   - Para testar sem cobrar de verdade, use as **credenciais de teste** do Mercado Pago (mesma tela, aba "Credenciales de prueba") e os [cartões de teste deles](https://www.mercadopago.com.ar/developers/es/docs/checkout-pro/additional-content/test-cards)
+
 3. **Deploy**
    - Suba a pasta pro GitHub (dá pra fazer pelo navegador, sem terminal)
    - Conecte o repositório no Vercel
@@ -29,7 +41,8 @@
 - Cadastro e login de cliente (Supabase Auth)
 - Agendamento: cliente vê horários livres dos próximos 7 dias e reserva um
 - Painel admin (`/admin`): editar perfil, gerenciar horários disponíveis, ver todas as consultas e mudar status
+- Pagamento real via Mercado Pago: ao confirmar, cliente é redirecionado pro checkout; a consulta só vira "confirmada" depois do pagamento aprovado (via webhook)
 
 ## Próximas etapas
-- Integração de pagamento (Mercado Pago) — vai travar a consulta em "confirmada" só depois do pagamento aprovado
 - Dashboard de faturamento (receita, inadimplência)
+- Design visual final (a versão atual é só funcional — o visual bonito fica pra etapa final)

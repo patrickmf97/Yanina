@@ -64,6 +64,10 @@ export const content = {
     colunaData: 'Fecha',
     colunaCliente: 'Cliente',
     colunaStatus: 'Estado',
+    pagoOkMsg: '¡Pago aprobado! Tu consulta está confirmada.',
+    pagoErroMsg: 'El pago no se completó. Podés intentar de nuevo.',
+    pagoPendenteMsg: 'Tu pago está pendiente de confirmación.',
+    campoPrecio: 'Precio de la consulta (ARS)',
   },
   pt: {
     nombre: 'Yanina',
@@ -130,5 +134,9 @@ export const content = {
     colunaData: 'Data',
     colunaCliente: 'Cliente',
     colunaStatus: 'Status',
+    pagoOkMsg: 'Pagamento aprovado! Sua consulta está confirmada.',
+    pagoErroMsg: 'O pagamento não foi concluído. Você pode tentar de novo.',
+    pagoPendenteMsg: 'Seu pagamento está pendente de confirmação.',
+    campoPrecio: 'Preço da consulta (ARS)',
   },
 }
