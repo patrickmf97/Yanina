@@ -1,0 +1,129 @@
+.admin-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md);
+}
+
+.admin-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.admin-tabs {
+  display: flex;
+  gap: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--space-md);
+}
+
+.admin-tabs__btn {
+  border: none;
+  background: none;
+  padding: 0.8rem 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-right: var(--space-md);
+}
+
+.admin-tabs__btn.is-active {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-width: 560px;
+}
+
+.admin-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-form select {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+}
+
+.admin-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.admin-msg {
+  font-size: 0.85rem;
+  color: var(--primary-deep);
+}
+
+.horario-form {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-end;
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.horario-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.horario-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  max-width: 400px;
+}
+
+.horario-item button {
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  text-align: left;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+  padding: 0.6rem;
+  border-bottom: 2px solid var(--primary);
+}
+
+.admin-table td {
+  padding: 0.7rem 0.6rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+}

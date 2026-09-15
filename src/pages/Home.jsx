@@ -1,18 +1,41 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { supabase } from '../lib/supabaseClient.js'
 import { useLanguage } from '../context/LanguageContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import LangSwitch from '../components/LangSwitch.jsx'
-import foto from '../assets/yanina.png'
+import fotoPadrao from '../assets/yanina.png'
 import './Home.css'
 
 export default function Home() {
   const { t } = useLanguage()
   const { user, signOut } = useAuth()
+  const [perfil, setPerfil] = useState(null)
+
+  useEffect(() => {
+    supabase
+      .from('perfil_psicologa')
+      .select('*')
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => setPerfil(data))
+  }, [])
+
+  // Enquanto não há nada salvo pelo admin, usa os textos padrão de content.js
+  const nombre = perfil?.nombre || t.nombre
+  const frase = perfil?.frase || t.frase
+  const bio = perfil?.bio || t.bio
+  const cita = perfil?.cita || t.cita
+  const titulo = perfil?.titulo || t.titulo
+  const ubicacion = perfil?.ubicacion || t.ubicacion
+  const email = perfil?.email_contato
+  const instagram = perfil?.instagram
+  const foto = perfil?.foto_url || fotoPadrao
 
   return (
     <div className="page">
       <header className="nav">
-        <span className="nav__brand">{t.nombre}</span>
+        <span className="nav__brand">{nombre}</span>
         <div className="nav__right">
           <LangSwitch />
           {user ? (
@@ -28,9 +51,9 @@ export default function Home() {
 
       <section className="hero">
         <div className="hero__text">
-          <p className="hero__eyebrow">{t.titulo}</p>
-          <h1 className="hero__headline">{t.frase}</h1>
-          <p className="hero__lead">{t.bio}</p>
+          <p className="hero__eyebrow">{titulo}</p>
+          <h1 className="hero__headline">{frase}</h1>
+          <p className="hero__lead">{bio}</p>
           <Link className="hero__button" to="/agendar">{t.heroBtn}</Link>
         </div>
         <div className="hero__photo-wrap">
@@ -40,7 +63,7 @@ export default function Home() {
               d="M 320 90 C 370 140 380 230 330 290 C 280 350 180 370 120 330 C 60 290 40 200 80 130 C 120 60 270 40 320 90 Z"
             />
           </svg>
-          <img className="hero__photo" src={foto} alt={t.nombre} />
+          <img className="hero__photo" src={foto} alt={nombre} />
         </div>
       </section>
 
@@ -57,7 +80,7 @@ export default function Home() {
       </section>
 
       <section className="cita">
-        <p>“{t.cita}”</p>
+        <p>“{cita}”</p>
       </section>
 
       <section id="agendar" className="agendamento-cta">
@@ -67,7 +90,7 @@ export default function Home() {
       </section>
 
       <footer className="footer">
-        <p>{t.ubicacion}</p>
+        <p>{ubicacion}{email ? ` · ${email}` : ''}{instagram ? ` · ${instagram}` : ''}</p>
       </footer>
     </div>
   )
