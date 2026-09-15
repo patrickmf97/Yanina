@@ -6,9 +6,10 @@ import LangSwitch from '../components/LangSwitch.jsx'
 import PerfilForm from './admin/PerfilForm.jsx'
 import HorariosManager from './admin/HorariosManager.jsx'
 import Agendamentos from './admin/Agendamentos.jsx'
+import Faturamento from './admin/Faturamento.jsx'
 import './Admin.css'
 
-const ABAS = ['perfil', 'horarios', 'agendamentos']
+const ABAS = ['perfil', 'horarios', 'agendamentos', 'faturamento']
 
 export default function AdminDashboard() {
   const { t, lang } = useLanguage()
@@ -19,6 +20,7 @@ export default function AdminDashboard() {
     perfil: t.adminTabPerfil,
     horarios: t.adminTabHorarios,
     agendamentos: t.adminTabAgendamentos,
+    faturamento: t.adminTabFaturamento,
   }
 
   return (
@@ -48,6 +50,7 @@ export default function AdminDashboard() {
       {aba === 'perfil' && <PerfilForm />}
       {aba === 'horarios' && <HorariosManager />}
       {aba === 'agendamentos' && <Agendamentos />}
+      {aba === 'faturamento' && <Faturamento />}
     </div>
   )
 }

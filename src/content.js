@@ -68,6 +68,15 @@ export const content = {
     pagoErroMsg: 'El pago no se completó. Podés intentar de nuevo.',
     pagoPendenteMsg: 'Tu pago está pendiente de confirmación.',
     campoPrecio: 'Precio de la consulta (ARS)',
+
+    // Faturamento
+    adminTabFaturamento: 'Facturación',
+    receitaTotal: 'Ingresos totales',
+    receitaMes: 'Ingresos este mes',
+    consultasConfirmadas: 'Consultas confirmadas',
+    taxaInadimplencia: 'Tasa de pagos pendientes/rechazados',
+    graficoReceitaTitulo: 'Ingresos por mes',
+    semDadosFaturamento: 'Todavía no hay pagos registrados.',
   },
   pt: {
     nombre: 'Yanina',
@@ -138,5 +147,14 @@ export const content = {
     pagoErroMsg: 'O pagamento não foi concluído. Você pode tentar de novo.',
     pagoPendenteMsg: 'Seu pagamento está pendente de confirmação.',
     campoPrecio: 'Preço da consulta (ARS)',
+
+    // Faturamento
+    adminTabFaturamento: 'Faturamento',
+    receitaTotal: 'Receita total',
+    receitaMes: 'Receita deste mês',
+    consultasConfirmadas: 'Consultas confirmadas',
+    taxaInadimplencia: 'Taxa de pagamentos pendentes/rejeitados',
+    graficoReceitaTitulo: 'Receita por mês',
+    semDadosFaturamento: 'Ainda não há pagamentos registrados.',
   },
 }

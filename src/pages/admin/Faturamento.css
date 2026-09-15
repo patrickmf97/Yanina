@@ -1,0 +1,37 @@
+.faturamento-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.faturamento-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--space-sm) var(--space-md);
+}
+
+.faturamento-card__label {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.3rem;
+}
+
+.faturamento-card__valor {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--primary-deep);
+}
+
+.faturamento-grafico {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+}
+
+.faturamento-grafico h3 {
+  font-size: 1rem;
+  margin-bottom: var(--space-sm);
+}

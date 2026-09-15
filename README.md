@@ -41,8 +41,9 @@
 - Cadastro e login de cliente (Supabase Auth)
 - Agendamento: cliente vê horários livres dos próximos 7 dias e reserva um
 - Painel admin (`/admin`): editar perfil, gerenciar horários disponíveis, ver todas as consultas e mudar status
-- Pagamento real via Mercado Pago: ao confirmar, cliente é redirecionado pro checkout; a consulta só vira "confirmada" depois do pagamento aprovado (via webhook)
+- Pagamento real via Mercado Pago: ao confirmar, cliente é redirecionado pro checkout; a consulta só vira "confirmada" depois do pagamento aprovado (via webhook) — **configuração das credenciais ainda pendente**
+- Dashboard de faturamento (aba "Facturación" no admin): receita total, receita do mês, consultas confirmadas, taxa de inadimplência e gráfico dos últimos 6 meses
 
 ## Próximas etapas
-- Dashboard de faturamento (receita, inadimplência)
+- Configurar as credenciais reais do Mercado Pago (pendente — falta acesso à conta da Yani)
 - Design visual final (a versão atual é só funcional — o visual bonito fica pra etapa final)
