@@ -1,35 +1,48 @@
-import { createContext, useContext, useState } from 'react'
-import { content } from '../content.js'
+import { createContext, useContext, useState, useEffect } from "react";
+import { ui } from "../ui.js";
+import { content } from "../content.js";
 
-const LanguageContext = createContext(null)
+const LanguageContext = createContext(null);
 
 export function LanguageProvider({ children }) {
   const [lang, setLang] = useState(() => {
     try {
-      return localStorage.getItem('lang') || 'es'
+      return localStorage.getItem("lang") === "pt" ? "pt" : "es";
     } catch {
-      return 'es'
+      return "es";
     }
-  })
+  });
+
+  useEffect(() => {
+    document.documentElement.lang = lang === "pt" ? "pt-BR" : "es-AR";
+  }, [lang]);
 
   const changeLang = (newLang) => {
-    setLang(newLang)
+    if (!["es", "pt"].includes(newLang)) return;
+    setLang(newLang);
     try {
-      localStorage.setItem('lang', newLang)
+      localStorage.setItem("lang", newLang);
     } catch {
       // ambiente sem localStorage disponível — segue sem persistir
     }
-  }
+  };
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang: changeLang, t: content[lang] }}>
+    <LanguageContext.Provider
+      value={{
+        lang,
+        setLang: changeLang,
+        t: { ...content[lang], ...ui[lang] },
+      }}
+    >
       {children}
     </LanguageContext.Provider>
-  )
+  );
 }
 
 export function useLanguage() {
-  const ctx = useContext(LanguageContext)
-  if (!ctx) throw new Error('useLanguage precisa estar dentro de <LanguageProvider>')
-  return ctx
+  const ctx = useContext(LanguageContext);
+  if (!ctx)
+    throw new Error("useLanguage precisa estar dentro de <LanguageProvider>");
+  return ctx;
 }

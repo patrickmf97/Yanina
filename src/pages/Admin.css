@@ -127,3 +127,109 @@
   border-bottom: 1px solid var(--line);
   font-size: 0.9rem;
 }
+.admin-title {
+  font-size: 38px;
+  letter-spacing: -1px;
+  margin: 35px 0;
+}
+.admin-tabs {
+  gap: 15px;
+  overflow-x: auto;
+}
+.admin-tabs__btn {
+  font-size: 12px;
+  margin-right: 20px;
+  white-space: nowrap;
+}
+.admin-form {
+  max-width: 720px;
+  background: white;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.admin-form label {
+  font-size: 12px;
+}
+.admin-form input,
+.admin-form textarea,
+.admin-form select {
+  font-size: 13px;
+}
+.translation-fields {
+  border: 1px solid var(--line);
+  padding: 20px;
+  display: grid;
+  gap: 16px;
+}
+.translation-fields legend {
+  font-size: 12px;
+}
+.horario-form label {
+  font-size: 12px;
+  display: grid;
+  gap: 7px;
+}
+.horario-form input,
+.horario-form select,
+.admin-appointment input,
+.admin-appointment select {
+  padding: 11px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  color: var(--ink);
+}
+.admin-appointments {
+  display: grid;
+  gap: 18px;
+}
+.admin-appointment {
+  padding: 25px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 20px;
+}
+.admin-appointment h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+.admin-appointment p {
+  font-size: 12px;
+}
+.admin-appointment label {
+  display: grid;
+  gap: 8px;
+  font-size: 11px;
+}
+.admin-appointment button {
+  align-self: end;
+  margin: 0;
+}
+.admin-page .faturamento-cards {
+  margin-top: 25px;
+}
+@media (max-width: 650px) {
+  .admin-page {
+    padding: 25px 20px;
+  }
+  .admin-title {
+    font-size: 30px;
+  }
+  .admin-form {
+    padding: 20px;
+  }
+  .admin-appointment {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  .admin-tabs__btn {
+    margin-right: 5px;
+  }
+  .admin-page__header {
+    font-size: 11px;
+  }
+}
