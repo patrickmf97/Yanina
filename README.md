@@ -1,54 +1,95 @@
-# Yanina — consultas online
+# Yanina | Psicologia Online
 
-React 18, Vite, Supabase Auth/Postgres e Stripe Checkout hospedado. Interface ES/PT para apresentação, agendamento, consultas do paciente e administração. Preserva o conteúdo e a arquitetura do projeto original.
+Projeto desenvolvido pela **ConvertaStudio** para transformar a presença digital da psicóloga Yanina em uma experiência completa de atendimento online.
 
-## Desenvolvimento e validação
+Mais do que uma página de apresentação, o site foi pensado para facilitar o caminho entre conhecer o trabalho da profissional e marcar uma consulta: o paciente pode conhecer a proposta de atendimento, criar sua conta, consultar horários disponíveis, agendar e acompanhar suas consultas em um único lugar.
 
-Requer Node >=22.12.0.
+🌐 **Site:** https://yaniterapia.vercel.app
 
-```sh
+## Sobre o projeto
+
+A proposta da ConvertaStudio é criar **sites que geram clientes** e resolvem necessidades reais do negócio. No projeto da Yanina, isso significou unir apresentação profissional, agendamento e gestão em uma mesma plataforma, reduzindo etapas para o paciente e dando mais autonomia para a profissional.
+
+O site possui interface em espanhol e português e foi desenvolvido pensando principalmente no atendimento online e na experiência em dispositivos móveis.
+
+## Principais funcionalidades
+
+- Site institucional responsivo em espanhol e português
+- Cadastro, login e recuperação de conta
+- Agenda com horários disponíveis em tempo real
+- Reserva de consultas com proteção contra conflitos de horário
+- Área **Mis Consultas** para acompanhamento dos agendamentos
+- Checkout integrado ao Stripe
+- Painel administrativo para gerenciamento do perfil, horários e consultas
+- Dashboard de faturamento
+- Controle de acesso e dados com Supabase Auth e RLS
+
+## Tecnologias
+
+O projeto foi construído com **React**, **Vite**, **Supabase** e **Stripe**, com deploy pela **Vercel**.
+
+No backend, as funções responsáveis por reservas e pagamentos validam os dados no servidor antes de criar uma cobrança. O valor da consulta e a moeda são definidos no painel/banco, evitando depender de valores fixos no frontend.
+
+## Agenda e consultas
+
+A agenda trabalha com o fuso de `America/Argentina/Buenos_Aires` e disponibiliza os próximos 14 dias. Cada consulta possui duração de 50 minutos e o sistema impede reservas sobrepostas.
+
+Ao selecionar um horário, o paciente cria uma reserva vinculada à própria conta. Consultas e links de atendimento ficam protegidos pelas regras de acesso do banco e só são exibidos ao usuário correspondente.
+
+## Pagamentos
+
+O fluxo de pagamento utiliza o Stripe Checkout. A confirmação não depende apenas do retorno do navegador: o status é validado pelo backend e pelos eventos recebidos através do webhook do Stripe.
+
+O projeto mantém referências da integração anterior com Mercado Pago apenas por compatibilidade com dados históricos. Novos pagamentos utilizam Stripe.
+
+## Rodando localmente
+
+Requer Node.js 22.12 ou superior.
+
+```bash
 npm ci
 cp .env.example .env.local
 npm run dev
+```
+
+As variáveis necessárias estão documentadas em `.env.example`. Chaves privadas do Supabase e Stripe devem permanecer somente no backend e nunca utilizar o prefixo `VITE_`.
+
+Para executar o frontend junto das funções da pasta `/api`, utilize:
+
+```bash
+vercel dev
+```
+
+## Testes
+
+O projeto possui testes para os principais fluxos de navegador, banco de dados, reservas e pagamentos.
+
+```bash
 npm test
 npx playwright install chromium
 npm run test:e2e
 npm run build
-npm audit
 ```
 
-`vite` serve o frontend. Para executar também `/api`, use `vercel dev` com o projeto vinculado e as variáveis de servidor configuradas. Não coloque segredos em variáveis `VITE_`.
+## Estrutura do banco
 
-Os testes de navegador iniciam o frontend com Supabase/Stripe simulados, sem enviar e-mails nem cobrar. Os testes Node executam os handlers com contratos simulados e verificam assinaturas de webhook com o SDK Stripe real. O teste de banco executa SQL e RLS em PostgreSQL via PGlite, incluindo repetição da migração. Esses testes não substituem homologação com Supabase Auth, entrega de e-mail, Stripe test mode e Vercel reais.
+Para uma instalação nova do Supabase, os scripts devem ser aplicados nesta ordem:
 
-## Banco e implantação
+```text
+supabase/schema.sql
+supabase/admin_schema.sql
+supabase/pagamento_schema.sql
+supabase/migrations/20260915_stripe_booking.sql
+```
 
-Para um banco novo, aplique nesta ordem: `supabase/schema.sql`, `supabase/admin_schema.sql`, `supabase/pagamento_schema.sql`, depois `supabase/migrations/20260915_stripe_booking.sql`. No banco existente, aplique somente a migração após confirmar que os três schemas base já existem.
+Em um banco já existente, os schemas base não devem ser executados novamente. Nesse caso, aplique somente as migrations necessárias após conferir o estado atual do banco.
 
-A migração mantém referências antigas do Mercado Pago para histórico, adiciona Stripe, cria perfis no cadastro, protege links e centraliza reservas. Ela remove a inserção direta de consultas pelos pacientes: coordene aplicação da migração com a publicação desta versão. Não execute os schemas base novamente sobre produção.
+## ConvertaStudio
 
-1. Prepare um ambiente de homologação com as variáveis de `.env.example`. Use chave Stripe de teste e chave Supabase de servidor apenas no backend.
-2. Aplique a migração nesse ambiente e publique a versão correspondente.
-3. Supabase Auth: ative confirmação de e-mail, configure Site URL e permita os retornos `/mis-consultas` e `/redefinir-senha` da origem publicada. Configure SMTP para entrega confiável. Confirme essas rotas no código ao personalizar templates.
-4. A conta da profissional deve existir em Auth e ter seu UUID em `public.admins`. Preserve os administradores existentes.
-5. No painel `/admin`, salve perfil, preço positivo, moeda e horários reais. Não existe preço comercial inventado no código.
-6. Crie o webhook Stripe para `https://SEU-DOMINIO/api/webhook-stripe`, eventos `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed` e `checkout.session.expired`. Configure o segredo desse endpoint em `STRIPE_WEBHOOK_SECRET` e faça novo deploy.
-7. Valide cadastro com recebimento de e-mail, redefinição de senha, compra com cartão de teste aprovado/recusado, abandono/retomada, webhook e link da consulta. Confira a consulta no banco e a sessão recuperada pelo backend.
-8. Somente depois faça a implantação coordenada em produção. A ativação de cobranças reais exige credenciais e webhook do modo de produção.
+A **ConvertaStudio** desenvolve sites e aplicações web para transformar presença digital em resultado: mais credibilidade, uma experiência profissional para o cliente e caminhos mais simples para contato, agendamento e conversão.
 
-## Regras implementadas
+Este projeto é um exemplo dessa proposta aplicada a um atendimento profissional que precisava ir além de um site institucional tradicional.
 
-- Agenda no fuso `America/Argentina/Buenos_Aires`, próximos 14 dias, antecedência mínima de 1 hora, sessão de 50 minutos e bloqueio de sobreposições.
-- Uma reserva pendente por paciente; retenção de 35 minutos. O Checkout deve ser criado logo após reservar: o Stripe exige pelo menos 30 minutos até expirar. Uma sessão aberta já criada pode ser retomada até sua expiração.
-- Valor e moeda vêm do banco, ficam congelados na reserva e são comparados ao Stripe no servidor. Nenhum parâmetro de retorno confirma pagamento por si só.
-- Checkout com chave de idempotência evita sessões duplicadas. Processamento assíncrono mantém a reserva até evento final.
-- Webhook assinado e consulta autenticada de status recuperam a sessão diretamente do Stripe. Pagamento atrasado de reserva já cancelada é registrado para conciliação; não ocupa novamente um horário liberado.
-- `minhas_consultas` retorna apenas dados do próprio paciente e libera o link somente em consultas confirmadas/realizadas. A leitura direta da coluna do link é bloqueada para clientes.
-- Administração usa `consultas_admin`, protegida por verificação no banco. Horários e perfil mantêm RLS. Links aceitam somente HTTPS.
-- Reembolsos e conciliação excepcional permanecem operações administrativas no Stripe; não há automação de reembolso nesta versão.
+---
 
-## Rotas
-
-`/`, `/cadastro`, `/entrar`, `/recuperar`, `/redefinir-senha`, `/agendar`, `/mis-consultas`, `/admin`.
-
-O endpoint antigo do Mercado Pago retorna 410. Não configure novos pagamentos nele.
+Desenvolvido por **Patrick Morais Ferreira — ConvertaStudio**.
