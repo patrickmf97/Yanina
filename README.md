@@ -1,49 +1,54 @@
-# Site da Yani — Psicóloga
+# Yanina — consultas online
 
-## Como configurar
+React 18, Vite, Supabase Auth/Postgres e Stripe Checkout hospedado. Interface ES/PT para apresentação, agendamento, consultas do paciente e administração. Preserva o conteúdo e a arquitetura do projeto original.
 
-1. **Supabase**
-   - Crie um projeto em https://supabase.com
-   - Vá em `SQL Editor` → cole o conteúdo de `supabase/schema.sql` → Run
-   - Cole também o conteúdo de `supabase/admin_schema.sql` → Run (cria as permissões de administradora)
-   - Vá em `Project Settings > API`, copie a `URL` e a `anon public key`
-   - Copie `.env.example` para `.env` e preencha essas duas variáveis
+## Desenvolvimento e validação
 
-2. **Tornar a Yani administradora**
-   - Ela precisa criar uma conta normal primeiro: acesse `/cadastro` no site e cadastre-se com o e-mail dela
-   - No Supabase, vá em `Authentication > Users`, copie o UUID da conta dela
-   - Vá em `Table Editor > admins` → Insert row → cole o UUID no campo `id`
-   - Pronto: agora ela consegue entrar em `/admin` com esse e-mail/senha e ver o painel
+Requer Node >=22.12.0.
 
-3. **Horários disponíveis**
-   - Antes só dava pra inserir direto no Supabase — agora a Yani mesma gerencia isso em `/admin`, aba "Horarios"
+```sh
+npm ci
+cp .env.example .env.local
+npm run dev
+npm test
+npx playwright install chromium
+npm run test:e2e
+npm run build
+npm audit
+```
 
-4. **Mercado Pago**
-   - Rode `supabase/pagamento_schema.sql` no SQL Editor (adiciona o campo de preço)
-   - Crie uma conta em https://www.mercadopago.com.ar (ou use a que a Yani já tem)
-   - Vá em `Seu negocio > Configuración > Credenciales de producción` e copie o **Access Token**
-   - Na Vercel, adicione as variáveis de ambiente (Settings > Environment Variables), como **Config** (não Secret, porque essas não têm o prefixo `VITE_` — não são expostas ao navegador de qualquer forma, já que só rodam no servidor):
-     - `SUPABASE_URL` (mesma URL do projeto, sem o `VITE_`)
-     - `SUPABASE_SERVICE_ROLE_KEY` (em `Project Settings > API > service_role` no Supabase — **NUNCA** compartilhe essa chave, ela ignora todas as regras de segurança)
-     - `MERCADOPAGO_ACCESS_TOKEN`
-     - `SITE_URL` (ex: `https://yaniterapia.vercel.app`)
-   - No painel admin (`/admin` → aba Perfil), defina o **preço da consulta** — sem isso o pagamento não é criado
-   - Para testar sem cobrar de verdade, use as **credenciais de teste** do Mercado Pago (mesma tela, aba "Credenciales de prueba") e os [cartões de teste deles](https://www.mercadopago.com.ar/developers/es/docs/checkout-pro/additional-content/test-cards)
+`vite` serve o frontend. Para executar também `/api`, use `vercel dev` com o projeto vinculado e as variáveis de servidor configuradas. Não coloque segredos em variáveis `VITE_`.
 
-3. **Deploy**
-   - Suba a pasta pro GitHub (dá pra fazer pelo navegador, sem terminal)
-   - Conecte o repositório no Vercel
-   - Nas configurações do projeto no Vercel, adicione as mesmas variáveis de ambiente (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`)
-   - Deploy automático a cada push
+Os testes de navegador iniciam o frontend com Supabase/Stripe simulados, sem enviar e-mails nem cobrar. Os testes Node executam os handlers com contratos simulados e verificam assinaturas de webhook com o SDK Stripe real. O teste de banco executa SQL e RLS em PostgreSQL via PGlite, incluindo repetição da migração. Esses testes não substituem homologação com Supabase Auth, entrega de e-mail, Stripe test mode e Vercel reais.
 
-## O que já funciona
-- Página de apresentação (ES/PT), com conteúdo puxado do banco (editável pelo admin)
-- Cadastro e login de cliente (Supabase Auth)
-- Agendamento: cliente vê horários livres dos próximos 7 dias e reserva um
-- Painel admin (`/admin`): editar perfil, gerenciar horários disponíveis, ver todas as consultas e mudar status
-- Pagamento real via Mercado Pago: ao confirmar, cliente é redirecionado pro checkout; a consulta só vira "confirmada" depois do pagamento aprovado (via webhook) — **configuração das credenciais ainda pendente**
-- Dashboard de faturamento (aba "Facturación" no admin): receita total, receita do mês, consultas confirmadas, taxa de inadimplência e gráfico dos últimos 6 meses
+## Banco e implantação
 
-## Próximas etapas
-- Configurar as credenciais reais do Mercado Pago (pendente — falta acesso à conta da Yani)
-- Design visual final (a versão atual é só funcional — o visual bonito fica pra etapa final)
+Para um banco novo, aplique nesta ordem: `supabase/schema.sql`, `supabase/admin_schema.sql`, `supabase/pagamento_schema.sql`, depois `supabase/migrations/20260915_stripe_booking.sql`. No banco existente, aplique somente a migração após confirmar que os três schemas base já existem.
+
+A migração mantém referências antigas do Mercado Pago para histórico, adiciona Stripe, cria perfis no cadastro, protege links e centraliza reservas. Ela remove a inserção direta de consultas pelos pacientes: coordene aplicação da migração com a publicação desta versão. Não execute os schemas base novamente sobre produção.
+
+1. Prepare um ambiente de homologação com as variáveis de `.env.example`. Use chave Stripe de teste e chave Supabase de servidor apenas no backend.
+2. Aplique a migração nesse ambiente e publique a versão correspondente.
+3. Supabase Auth: ative confirmação de e-mail, configure Site URL e permita os retornos `/mis-consultas` e `/redefinir-senha` da origem publicada. Configure SMTP para entrega confiável. Confirme essas rotas no código ao personalizar templates.
+4. A conta da profissional deve existir em Auth e ter seu UUID em `public.admins`. Preserve os administradores existentes.
+5. No painel `/admin`, salve perfil, preço positivo, moeda e horários reais. Não existe preço comercial inventado no código.
+6. Crie o webhook Stripe para `https://SEU-DOMINIO/api/webhook-stripe`, eventos `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed` e `checkout.session.expired`. Configure o segredo desse endpoint em `STRIPE_WEBHOOK_SECRET` e faça novo deploy.
+7. Valide cadastro com recebimento de e-mail, redefinição de senha, compra com cartão de teste aprovado/recusado, abandono/retomada, webhook e link da consulta. Confira a consulta no banco e a sessão recuperada pelo backend.
+8. Somente depois faça a implantação coordenada em produção. A ativação de cobranças reais exige credenciais e webhook do modo de produção.
+
+## Regras implementadas
+
+- Agenda no fuso `America/Argentina/Buenos_Aires`, próximos 14 dias, antecedência mínima de 1 hora, sessão de 50 minutos e bloqueio de sobreposições.
+- Uma reserva pendente por paciente; retenção de 35 minutos. O Checkout deve ser criado logo após reservar: o Stripe exige pelo menos 30 minutos até expirar. Uma sessão aberta já criada pode ser retomada até sua expiração.
+- Valor e moeda vêm do banco, ficam congelados na reserva e são comparados ao Stripe no servidor. Nenhum parâmetro de retorno confirma pagamento por si só.
+- Checkout com chave de idempotência evita sessões duplicadas. Processamento assíncrono mantém a reserva até evento final.
+- Webhook assinado e consulta autenticada de status recuperam a sessão diretamente do Stripe. Pagamento atrasado de reserva já cancelada é registrado para conciliação; não ocupa novamente um horário liberado.
+- `minhas_consultas` retorna apenas dados do próprio paciente e libera o link somente em consultas confirmadas/realizadas. A leitura direta da coluna do link é bloqueada para clientes.
+- Administração usa `consultas_admin`, protegida por verificação no banco. Horários e perfil mantêm RLS. Links aceitam somente HTTPS.
+- Reembolsos e conciliação excepcional permanecem operações administrativas no Stripe; não há automação de reembolso nesta versão.
+
+## Rotas
+
+`/`, `/cadastro`, `/entrar`, `/recuperar`, `/redefinir-senha`, `/agendar`, `/mis-consultas`, `/admin`.
+
+O endpoint antigo do Mercado Pago retorna 410. Não configure novos pagamentos nele.

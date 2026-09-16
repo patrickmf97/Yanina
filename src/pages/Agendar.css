@@ -1,84 +1,211 @@
 .agendar-page {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: var(--space-xl) var(--space-md);
+  max-width: 1180px;
+  margin: auto;
+  padding: 35px 35px 80px;
 }
-
-.agendar-page__header {
+.agendar-page h1 {
+  font-size: 45px;
+  letter-spacing: -1.5px;
+}
+.booking-subtitle {
+  font-size: 12px;
+  margin-top: 17px;
+}
+.booking-layout {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 40px;
+  margin-top: 38px;
+  align-items: start;
+}
+.agendar-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+.agendar-dia {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 22px;
+  background: #fdfdf8;
+}
+.agendar-dia h3 {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin-bottom: 17px;
+  line-height: 1.5;
+}
+.agendar-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.agendar-slot {
+  border: 1px solid #d5ddcb;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--primary-deep);
+  padding: 9px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.agendar-slot:hover {
+  background: var(--bg-alt);
+}
+.agendar-slot.is-selected {
+  background: var(--primary-deep);
+  border-color: var(--primary-deep);
+  color: white;
+}
+.booking-summary {
+  background: #eaeedf;
+  padding: 28px;
+  border: 1px solid #d9e0cc;
+  border-radius: 7px;
+  position: sticky;
+  top: 25px;
+}
+.booking-symbol {
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  color: var(--primary-deep);
+  margin-bottom: 22px;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #b8c6a7;
+  border-radius: 50%;
+}
+.booking-summary h2 {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+.booking-summary > p {
+  font-size: 12px;
+}
+.booking-price {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-md);
+  gap: 20px;
+  border-block: 1px solid #cfd8c2;
+  padding: 19px 0;
+  margin: 25px 0 17px;
+  font-size: 11px;
 }
-
-.agendar-page h1 {
-  font-size: 1.8rem;
+.booking-price strong {
+  font-size: 19px;
+  color: var(--primary-deep);
 }
-
-.agendar-grid {
+.chosen-slot {
+  font-weight: 600;
+  line-height: 1.8;
+}
+.booking-summary .booking-note {
+  font-size: 10px;
+  margin: 17px 0 23px;
+  line-height: 1.9;
+}
+.booking-summary .hero__button {
+  width: 100%;
+  margin-top: 15px;
+  font-size: 11px;
+  padding: 15px;
+  gap: 8px;
+}
+.booking-summary .checkout-provider {
+  font-size: 9px;
+  text-align: center;
+  margin: 17px 0 0;
+}
+.consultation-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: var(--space-md);
-  margin-top: var(--space-md);
+  gap: 17px;
+  margin-top: 30px;
 }
-
-.agendar-dia {
-  border-top: 2px solid var(--primary);
-  padding-top: var(--space-sm);
-}
-
-.agendar-dia h3 {
-  font-size: 1rem;
-  margin-bottom: var(--space-sm);
-  text-transform: capitalize;
-}
-
-.agendar-slots {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.agendar-slot {
+.consultation-card {
+  background: white;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: #fff;
-  padding: 0.6rem 0.8rem;
-  font-size: 0.9rem;
-  text-align: left;
-  cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  border-radius: 7px;
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  align-items: center;
 }
-
-.agendar-slot:hover {
-  border-color: var(--primary);
+.consultation-card h2 {
+  font-size: 23px;
+  margin: 12px 0;
 }
-
-.agendar-slot.is-selected {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: #fff;
+.consultation-card p {
+  font-size: 11px;
 }
-
-.agendar-slot:disabled {
-  opacity: 0.4;
-  cursor: default;
-  text-decoration: line-through;
+.consultation-card .hero__button {
+  white-space: nowrap;
 }
-
-.agendar-vazio {
-  color: var(--ink-soft);
-  font-size: 0.9rem;
+.account-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
 }
-
-.agendar-confirmar {
-  margin-top: var(--space-lg);
-  padding: var(--space-md);
-  background: var(--bg-alt);
-  border-radius: var(--radius);
+.account-title .hero__button {
+  flex-shrink: 0;
 }
-
-.agendar-confirmar__aviso {
-  color: var(--ink-soft);
-  margin-bottom: var(--space-sm);
+.consultation-actions {
+  text-align: right;
+}
+@media (max-width: 750px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .booking-summary {
+    position: static;
+  }
+  .agendar-page {
+    padding: 25px 22px 55px;
+  }
+  .agendar-page h1 {
+    font-size: 36px;
+  }
+  .agendar-dia {
+    padding: 17px;
+  }
+  .agendar-grid {
+    gap: 12px;
+  }
+  .agendar-slot {
+    padding: 8px 10px;
+  }
+  .page-top {
+    font-size: 10px;
+  }
+  .page-top > div {
+    gap: 12px;
+  }
+  .consultation-card {
+    display: block;
+    padding: 20px;
+  }
+  .consultation-actions {
+    text-align: left;
+    margin-top: 18px;
+  }
+  .account-title {
+    display: block;
+  }
+  .account-title .hero__button {
+    margin-top: 23px;
+  }
+  .agendar-dia h3 {
+    font-size: 11px;
+  }
+}
+@media (max-width: 370px) {
+  .agendar-grid {
+    grid-template-columns: 1fr;
+  }
 }
