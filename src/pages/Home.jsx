@@ -102,7 +102,11 @@ export default function Home() {
             <img
               className="hero__photo"
               src={image}
+              width="1085"
+              height="1449"
+              decoding="async"
               onError={(e) => {
+                e.currentTarget.onerror = null;
                 e.currentTarget.src = fotoPadrao;
               }}
               alt={nombre}
