@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "test": "node --test tests/*.test.js",
     "test:e2e": "playwright test",
+    "screenshots": "node scripts/screenshots.mjs",
     "format": "prettier --write src api server tests",
     "check:format": "prettier --check src api server tests"
   },
